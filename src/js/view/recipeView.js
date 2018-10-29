@@ -4,20 +4,25 @@ export const clearRecipe = () => {
     elements.recipe.innerHTML ='';
 };
 
+// Format cho số lượng nguyên liệu dạng số thực sang phân số 
+//EX : 4.5 => 4 1/2 , 0.25 => 1/4
 
-//EX : 4.5 => 4 1/2 
 const formatCount = count => {
 
-    // Lấy 3 chữ sô thập phân
-    const newCount = Math.round(count * 10) / 10;
+    // Lấy 2 chữ sô thập phân
+    const newCount = Math.round(count * 100) / 100;
+    console.log(newCount)
     if (newCount) {
         const [int, dec] = newCount.toString().split('.').map(el => parseInt(el, 10));
         if (!dec) return newCount;
 
+        // Nếu newCount < 1 thì convert a/b
         if (int === 0) {
             const fr = new Fraction(newCount);
             return `${fr.numerator}/${fr.denominator}`;
-        } else {
+        } 
+        // Nếu newCount >= 1 thì convert a b/c
+        else {
             const fr = new Fraction(newCount-int);
             return `${int} ${fr.numerator}/${fr.denominator}`;
         }
@@ -33,7 +38,7 @@ const createIngredient = ingredient =>
         </svg>
         <div class="recipe__count">${formatCount(ingredient.count)}</div>
         <div class="recipe__ingredient">
-            <span class="recipe__unit">${ingredient.unit}</span>
+            <!--<span class="recipe__unit">${ingredient.unit}</span>-->
             ${ingredient.ingredient}
         </div>
     </li>
@@ -59,7 +64,7 @@ export const renderRecipe = recipe => {
                     <svg class="recipe__info-icon">
                         <use href="img/icons.svg#icon-man"></use>
                     </svg>
-                    <span class="recipe__info-data recipe__info-data--people">${recipe.serving}</span>
+                    <span class="recipe__info-data recipe__info-data--people">${recipe.service}</span>
                     <span class="recipe__info-text"> servings</span>
 
                     <div class="recipe__info-buttons">
@@ -94,12 +99,12 @@ export const renderRecipe = recipe => {
                     <svg class="search__icon">
                         <use href="img/icons.svg#icon-shopping-cart"></use>
                     </svg>
-                    <span>Add to shopping list</span>
+                    <span>Thêm vào danh sách mua</span>
                 </button>
             </div>
 
             <div class="recipe__directions">
-                <h2 class="heading-2">How to cook it</h2>
+                <h2 class="heading-2">Các bước thực hiện</h2>
                 <p class="recipe__directions-text">
                     This recipe was carefully designed and tested by
                     <span class="recipe__by">${recipe.author}</span>. Please check out directions at their website.
@@ -116,10 +121,11 @@ export const renderRecipe = recipe => {
     elements.recipe.insertAdjacentHTML('afterbegin', markup);
 };
 
+// 
 export const updateServingIngredients = recipe => {
     
     // Update serving 
-    document.querySelector('.recipe__info-data--people').textContent = recipe.serving;
+    document.querySelector('.recipe__info-data--people').textContent = recipe.service;
 
     // Update ingredients 
     const countElements =  Array.from(document.querySelectorAll('.recipe__count'));

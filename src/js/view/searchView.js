@@ -22,6 +22,7 @@ export const hightlightSelect = id => {
     document.querySelector(`a[href="#${id}"`).classList.add('results__link--active');
 };
 
+// Giới hạn hiện thị tên của kết quả trả về là 20 ký tự 
 const limitRecipeTitle = (title, limit = 20) => {
     const newTitle = [];
     if (title.length > limit) {
@@ -40,13 +41,13 @@ const limitRecipeTitle = (title, limit = 20) => {
 
 const renderRecipe = recipe => {
     const markup = `<li>
-                        <a class="results__link" href="#${recipe.recipe_id}">
+                        <a class="results__link" href="#${recipe.   id}">
                             <figure class="results__fig">
-                                <img src="${recipe.image_url}" alt="${limitRecipeTitle(recipe.title)}">
+                                <img src="${recipe.imgUrl}" alt="${limitRecipeTitle(recipe.name)}">
                             </figure>
                             <div class="results__data">
-                                <h4 class="results__name">${limitRecipeTitle(recipe.title)}</h4>
-                                <p class="results__author">${recipe.publisher}</p>
+                                <h4 class="results__name">${limitRecipeTitle(recipe.name)}</h4>
+                                <p class="results__author">Hisiter</p>
                             </div>
                         </a>
                     </li>`;
@@ -55,7 +56,7 @@ const renderRecipe = recipe => {
     
 };
 
-// type : 'prev' or 'next'
+// Tạo button chuyển danh sách kết quả : type : 'prev' or 'next'
 const createButton = (page, type) => {
     const button = `
                 <button class="btn-inline results__btn--${type}"s data-goto=${type === 'next' ? page + 1 : page - 1}>
@@ -74,8 +75,8 @@ const renderButton = (page,numRes, resPerPage) => {
     // console.log('pages = ' + pages);
 
     let button;
+    // Nếu trang hiện tại là 1 và tổng số trang lớn hơn 1 thì hiển thị button next
     if (page === 1 && pages > 1) {
-        // Only Button next
         button = createButton(page, 'next');
 
     } else if (page < pages) {
@@ -87,8 +88,11 @@ const renderButton = (page,numRes, resPerPage) => {
     } else if (page === pages && pages > 1 ) {
         // Only button prev
         button = createButton(page, 'prev');
+    } 
+    // Nếu danh sách kết quả chỉ trả về 1 trang -> Không hiển thị gì 
+    else {
+        button = '';
     }
-
     elements.searchResPage.insertAdjacentHTML('afterbegin', button);
 };
 

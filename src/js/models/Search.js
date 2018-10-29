@@ -9,9 +9,15 @@ export default class Search {
     async getResult() {
         
         try {
-            const res = await axios(`${proxy}http://food2fork.com/api/search?key=${key}&q=${this.query}`);
-            this.result = res.data.recipes;
-            console.log(this.result);
+
+            // Get API bằng axios 
+            const res = await axios(`http://127.0.0.1:8080/recipe-rest-pj1/api/search?q=${this.query}`);
+            
+            console.log(`http://127.0.0.1:8080/recipe-rest-pj1/api/search?q=${this.query}`);
+            // Get recipes : return recipes array  
+            this.result = res.data.recipes;         // Tạo 1 field result cho lớp Search 
+ 
+            console.log(res);
         } catch (error) {
             alert(error);
         } 

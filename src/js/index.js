@@ -16,7 +16,7 @@ import {elements, renderLoader, clearLoader, elementString} from './view/base';
  * - Shopping list object
  * - Liked recipes
  */
-
+// Biến toàn cục : chứa các object quan trọng
 const state = {};
 
 
@@ -25,17 +25,17 @@ const state = {};
  * SEARCH CONTROLLER
  */
 const controlSearch = async () => {
+    
     // 1) Get query from view
     const query = searchView.getInput();
-    // const query = 'pizza';
 
     if (query) {
         // 2) New search object and add to state
         state.search = new Search(query);
 
         // 3) Prepare UI for results
-        searchView.clearInput();
-        searchView.clearList();
+        searchView.clearInput();                        // Xóa dữ liệu nhập 
+        searchView.clearList();                         // Xóa kết quả tìm kiếm cũ 
         renderLoader(elements.searchContainer);
         try {
             // 4) Search for recipes
@@ -43,6 +43,8 @@ const controlSearch = async () => {
 
             // 5) Render result on UI
             clearLoader();
+            
+            // console.log(state.search.result);
             if (state.search.result.length !== 0) {
                 searchView.renderResults(state.search.result);
             }
@@ -56,18 +58,15 @@ const controlSearch = async () => {
     }
 }
 
+// Xử lý sự kiện user click tìm kiếm 
 elements.searchForm.addEventListener('submit', e => {
     e.preventDefault();     // ngan chan hanh dong mac dinh la submit ve he thong, thay vao do se xu ly bang ham duoi
     controlSearch();
 });
 
-// //TESTING
-// window.addEventListener('load', e => {
-//     e.preventDefault();     // ngan chan hanh dong mac dinh la submit ve he thong, thay vao do se xu ly bang ham duoi
-//     controlSearch();
-// });
 
-// element.closest(selector) method : duyet tu target len tren trong to tien TREE: chon to tien gan nhat la 'btn-inline'
+// Xử lý sự kiện click chuyển trang các kết quả tìm kiếm được
+// Note : element.closest(selector) method : duyet tu target len tren trong to tien TREE: chon to tien gan nhat la 'btn-inline'
 elements.searchResPage.addEventListener('click', e => {
     const btn = e.target.closest(`.${elementString.button}`);
 
@@ -87,6 +86,7 @@ elements.searchResPage.addEventListener('click', e => {
 const controlRecipe = async () => {
     // Get id recipe (after # address url - hash)
     const id = window.location.hash.replace('#', '');
+    // console.log(id);
 
     if (id) {
         // Prepare UI for render
@@ -107,8 +107,8 @@ const controlRecipe = async () => {
             state.recipe.parseIngredients();
 
             // Calculate serving and time
-            state.recipe.calcTime();
-            state.recipe.calcServing();
+            // state.recipe.calcTime();
+            // state.recipe.calcServing();
 
             // Render recipe 
             clearLoader();
@@ -131,13 +131,13 @@ const controlRecipe = async () => {
 // Handling hashchange (khi click vao 1 recipe) and  load (tải xong trang)
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
 
-// Handling recipe button click
+// Handling recipe button click : Xử lý sự kiện tăng, giảm số người ăn 
 elements.recipe.addEventListener('click', event => {
 
     //Get element not exist when loaded document : use closest() method // matches()
         if (event.target.matches('.btn-decrease, .btn-decrease *')) {
             // Decrease serving 
-            if (state.recipe.serving > 1) {
+            if (state.recipe.service > 1) {
                 state.recipe.updateServing('dec');
                 // recipeView.renderRecipe(state.recipe);           -- shouldn't render  again all 
                 recipeView.updateServingIngredients(state.recipe);
@@ -148,6 +148,7 @@ elements.recipe.addEventListener('click', event => {
             // Increase serving
             state.recipe.updateServing('inc');
             recipeView.updateServingIngredients(state.recipe);
+
     
         } else if (event.target.matches('.recipe__btn, .recipe__btn *')) {
             controlShoppingList();
@@ -164,14 +165,14 @@ const controlShoppingList = () => {
     // Prepare for render UI
     listView.clearShoppingList();
 
-    // Get list object
+    // Nếu chưa tồn tại thì tạo list nguyên liệu cần mua 
     if (!state.list) {
         state.list = new List();
     }
 
     // Add item to state.list and render item list 
     state.recipe.ingredients.forEach(ing => {
-        const item = state.list.addItem(ing.count, ing.unit, ing.ingredient);
+        const item = state.list.addItem(ing.count, ing.ingredient);
         listView.renderItem(item);
     });
 

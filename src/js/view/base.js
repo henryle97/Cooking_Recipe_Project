@@ -14,6 +14,7 @@ export const elementString = {
     button: 'btn-inline'
 };
 
+// Trạng thái chờ kết quả tìm kiếm 
 export const renderLoader = parent => {
     const loader = `
         <div class="${elementString.loader}">
