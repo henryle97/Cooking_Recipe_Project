@@ -24,4 +24,11 @@ export const deleteItem = id => {
 
 export const clearShoppingList = () => {
     elements.shoppingList.innerHTML ='';
+   
+}
+
+const displayShopping = () => {
+    document.querySelector(".heading-2").toggleAttribute("hidden");
+    document.querySelector(".shopping__list").toggleAttribute("hidden");
+
 }

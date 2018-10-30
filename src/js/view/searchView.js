@@ -96,8 +96,22 @@ const renderButton = (page,numRes, resPerPage) => {
     elements.searchResPage.insertAdjacentHTML('afterbegin', button);
 };
 
-export const renderResults = (recipes, page = 1 , resPerPage = 10) => {
+export const renderNotFound = () => {
+    const markup = `
+              
+    <li style="font-size:1.5rem; text-align:center; padding: 56px 0 56px 0">
+    
+                        Không tìm thấy kết quả nào phù hợp
+                    </li>`;
+    elements.searchList.insertAdjacentHTML('beforeend', markup);
+}
 
+export const renderResults = (recipes, page = 1 , resPerPage = 10) => {
+    const markup = `
+            <h2 class="heading-2">
+                <span>Kết quả tìm kiếm</span>
+            </h2>`;
+    elements.searchList.insertAdjacentHTML('afterbegin', markup);
     const start = (page - 1) * resPerPage; 
     const end = page * resPerPage;
 
@@ -107,5 +121,7 @@ export const renderResults = (recipes, page = 1 , resPerPage = 10) => {
 
     renderButton(page,recipes.length, resPerPage);
 }; 
+
+
 
 

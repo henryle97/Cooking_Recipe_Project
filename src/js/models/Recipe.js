@@ -21,6 +21,7 @@ export default class Recipe {
             this.ingredients = recipe.fullIngredients;
             this.time = recipe.cookTime;
             this.service = 4;
+            this.steps = recipe.steps;
 
 
         } catch(error) {
@@ -121,6 +122,19 @@ export default class Recipe {
 
         this.ingredients =  newIngredients;
         console.log(this.ingredients);
+    }
+
+    parseSteps() {
+        const newSteps = this.steps.map((el, ind) => {
+            let objStep = {
+                number : ind,
+                description : el
+            };
+
+            return objStep;
+        });
+
+        this.steps = newSteps;
     }
 
     updateServing(type) {

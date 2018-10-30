@@ -36,6 +36,7 @@ const controlSearch = async () => {
         // 3) Prepare UI for results
         searchView.clearInput();                        // Xóa dữ liệu nhập 
         searchView.clearList();                         // Xóa kết quả tìm kiếm cũ 
+        recipeView.clearRecipe();
         renderLoader(elements.searchContainer);
         try {
             // 4) Search for recipes
@@ -50,8 +51,9 @@ const controlSearch = async () => {
             }
             
         } catch(error) {
-            console.log(error);
-            alert('Something wrong with the search');
+            // console.log(error);
+            // alert('Something wrong with the search');
+            searchView.renderNotFound();
             clearLoader();
         }
 
@@ -105,6 +107,7 @@ const controlRecipe = async () => {
             // Get recipe data
             await state.recipe.getRecipe();
             state.recipe.parseIngredients();
+            state.recipe.parseSteps();
 
             // Calculate serving and time
             // state.recipe.calcTime();
@@ -164,6 +167,7 @@ elements.recipe.addEventListener('click', event => {
 const controlShoppingList = () => {
     // Prepare for render UI
     listView.clearShoppingList();
+
 
     // Nếu chưa tồn tại thì tạo list nguyên liệu cần mua 
     if (!state.list) {

@@ -13,13 +13,14 @@ export default class Search {
             // Get API bằng axios 
             const res = await axios(`http://127.0.0.1:8080/recipe-rest-pj1/api/search?q=${this.query}`);
             
-            console.log(`http://127.0.0.1:8080/recipe-rest-pj1/api/search?q=${this.query}`);
+            console.log(res);
             // Get recipes : return recipes array  
             this.result = res.data.recipes;         // Tạo 1 field result cho lớp Search 
  
-            console.log(res);
+            // console.log(res);
         } catch (error) {
-            alert(error);
+            // alert(error);
+            this.result = "error";
         } 
     }
 }

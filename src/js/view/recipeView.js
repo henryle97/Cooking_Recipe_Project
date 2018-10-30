@@ -44,6 +44,23 @@ const createIngredient = ingredient =>
     </li>
     `;
 
+const createStep = step => 
+
+        `<li class="">
+            <div class="row">
+                <div class="col-2">
+                    <span class="badge badge-pill badge-danger p-3 " style="font-size: 1.3rem">
+                        <i class="fa fa-bookmark-o fa-1g" aria-hidden="true"></i>
+                        Bước ${step.number + 1}</span>
+                </div>
+                <div class="col-10">
+                    <p>${step.description}</p>
+                </div>
+            </div>
+    </li>`
+
+;
+
 export const renderRecipe = recipe => {
     const markup  = `
     <figure class="recipe__fig">
@@ -58,14 +75,14 @@ export const renderRecipe = recipe => {
                         <use href="img/icons.svg#icon-stopwatch"></use>
                     </svg>
                     <span class="recipe__info-data recipe__info-data--minutes">${recipe.time}</span>
-                    <span class="recipe__info-text"> minutes</span>
+                    <span class="recipe__info-text"> phút</span>
                 </div>
                 <div class="recipe__info">
                     <svg class="recipe__info-icon">
                         <use href="img/icons.svg#icon-man"></use>
                     </svg>
                     <span class="recipe__info-data recipe__info-data--people">${recipe.service}</span>
-                    <span class="recipe__info-text"> servings</span>
+                    <span class="recipe__info-text"> người</span>
 
                     <div class="recipe__info-buttons">
                         <button class="btn-tiny btn-decrease">
@@ -105,17 +122,12 @@ export const renderRecipe = recipe => {
 
             <div class="recipe__directions">
                 <h2 class="heading-2">Các bước thực hiện</h2>
-                <p class="recipe__directions-text">
-                    This recipe was carefully designed and tested by
-                    <span class="recipe__by">${recipe.author}</span>. Please check out directions at their website.
-                </p>
-                <a class="btn-small recipe__btn" href="${recipe.url}" target="_blank">
-                    <span>Directions</span>
-                    <svg class="search__icon">
-                        <use href="img/icons.svg#icon-triangle-right"></use>
-                    </svg>
-
-                </a>
+                <div class="row">
+                    <ul class="list-unstyled">
+                        ${recipe.steps.map(el => createStep(el)).join('')}
+                        
+                    </ul>
+                </div>
             </div>`;    
 
     elements.recipe.insertAdjacentHTML('afterbegin', markup);
