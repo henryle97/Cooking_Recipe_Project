@@ -1,3 +1,6 @@
+import $ from 'jquery';
+require('jquery-ui/ui/widgets/autocomplete');
+
 import Search from './models/Search';
 import Recipe from './models/Recipe';
 import List from './models/List';
@@ -8,6 +11,7 @@ import * as recipeView from './view/recipeView';
 import * as listView from './view/listView';
 import * as likeView from './view/likeView';
 import {elements, renderLoader, clearLoader, elementString} from './view/base';
+
 
 
 /** Global state of the application
@@ -28,6 +32,7 @@ const controlSearch = async () => {
     
     // 1) Get query from view
     const query = searchView.getInput();
+    console.log(query);
 
     if (query) {
         // 2) New search object and add to state
@@ -59,6 +64,59 @@ const controlSearch = async () => {
 
     }
 }
+
+
+// Phải đặt trên hàm autocomplete
+const getRecipes = async (request, response) => {
+    let query = request.term;
+    let search = new Search(query);
+    try {
+        await search.getResult();
+
+        let recipes = search.result;
+        console.log(recipes);
+        console.log(recipes.length);
+        if (recipes != "error") {
+            
+            let recipesName = recipes.map(rp => rp.name);
+            // response(recipesName);      // return recipesName
+            console.log(recipes);
+            response(recipes);
+        }
+        
+    } catch(error) {
+        console.log(error);
+    }
+}
+
+// Xử lý suggest tìm kiếm 
+$(".search__field").autocomplete({
+    source: getRecipes,
+    // focus: function (event, ui) {
+    //     $(".search__field").val(ui.item.name);
+    //     return false;
+    // },
+    select: function (event, ui) {
+        $(".search__field").val(ui.item.name);
+        return false;
+    }
+})
+    .data("ui-autocomplete")._renderItem = function (ul, item) {
+    return $("<li>")
+        .data("item.autocomplete", item)
+        .append(`
+            <a class="results__link" style="max-width:350px" href="#${item.id}">
+                <figure class="results__fig">
+                    <img src="${item.imgUrl}" alt="">
+                </figure>
+                <div class="results__data">
+                    <h4 class="results__name">${item.name}</h4>
+                </div>
+            </a>`)
+        .appendTo(ul);
+    };
+
+
 
 // Xử lý sự kiện user click tìm kiếm 
 elements.searchForm.addEventListener('submit', e => {

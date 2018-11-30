@@ -187,6 +187,12 @@
         outline: none; }
       .search__field::placeholder {
         color: #DAD0CC; }
+
+      .search a {
+        text-decoration: none;
+        outline: none;
+        border:none !important;
+      }
   
   .likes {
     position: relative;
@@ -239,8 +245,10 @@
       text-decoration: none; }
     .results__link:hover,
     .likes__link:hover {
-      background-color: #F9F5F3;
-      transform: translateY(-2px); }
+      background-color: #F9F5F3 !important;
+      transform: translateY(-2px);
+      border:none !important;
+    }
     .results__link--active,
     .likes__link--active {
       background-color: #F9F5F3; }

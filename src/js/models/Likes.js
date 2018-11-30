@@ -1,7 +1,6 @@
 export default class Likes {
     constructor() {
-        this.likes = [];
-        
+        this.likes = [];        
     }
 
     addLike(id, title, author,img) {
@@ -16,7 +15,7 @@ export default class Likes {
 
     deleteLike(id) {
         const index = this.likes.findIndex(el => el.id === id);
-        this.likes.splice(index, 1);  
+        this.likes.splice(index, 1);  // remove phan tu tai vi tri index
         this.persistData();  
 
     }
